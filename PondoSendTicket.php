@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Send Ticket</title>
 </head>
 <body>
 
@@ -33,23 +33,23 @@
 	  }
 	  else{
 	    echo "";
-	  } 
-	
-	$query = "Select parentID,StoreName from store where storeID=".$_POST['branchselect']."";  
-  	$result = $conn->query($query); 
+	  }
+
+	$query = "Select parentID,StoreName from store where storeID=".$_POST['branchselect']."";
+  	$result = $conn->query($query);
 
 
   	$branch = str_pad($_POST['branchselect'], 4, "0", STR_PAD_LEFT);
-  	
 
-  	if ($result->num_rows > 0) {     
-	    while($row = $result->fetch_assoc()) {      
+
+  	if ($result->num_rows > 0) {
+	    while($row = $result->fetch_assoc()) {
 	    	$parentid = $row["parentID"];
 	    	$storename = $row["StoreName"];
 	    	//echo 'parentid:'.$row["parentID"].'<br>';
-	      	//echo '<option value="'.$row["storeID"].'">'.$row["storeName"].'</option>';      
-	      }    
-    } 
+	      	//echo '<option value="'.$row["storeID"].'">'.$row["storeName"].'</option>';
+	      }
+    }
 	else {
 	   echo "0 results";
 	}
@@ -61,11 +61,11 @@
 	else
 		$tickectIntro = 'OB';
 
-	
+
 	$query = "SELECT COUNT(*) FROM ticket where storeId=".$branch."";
-	$result  = $conn->query($query); 
+	$result  = $conn->query($query);
 		while($row = $result->fetch_assoc()) {
-			//echo 	'retrieved:'.$row['COUNT(*)'];      
+			//echo 	'retrieved:'.$row['COUNT(*)'];
 			$nextID = $row['COUNT(*)']+1;
 
 		}
@@ -73,11 +73,11 @@
   	date_default_timezone_set("Asia/Hong_Kong");
   	$nextID = str_pad($nextID, 3, "0", STR_PAD_LEFT);
   	//$ticketnumber = ''.$parentid.''.date("y").date("m").date("d").date("h").date("i").date("s").$branch.'';
-	$ticketnumber = ''.$tickectIntro.'-'.$branch.'-'.$nextID.'';	
+	$ticketnumber = ''.$tickectIntro.'-'.$branch.'-'.$nextID.'';
   	$storeID = $_POST['branchselect'];
-	$name = $_POST['sname']; 
-	$email = $_POST['email']; 
-	$contactnumber= $_POST['contactnumber']; 
+	$name = $_POST['sname'];
+	$email = $_POST['email'];
+	$contactnumber= $_POST['contactnumber'];
 	$concerntype = $_POST['concerntype'];
 	$cardnumber = $_POST['cardnumber'];
 	$wrongload = (double)$_POST['wrongload'];
@@ -86,15 +86,15 @@
 	$concerndetailArea = $_POST['concerndetailArea'];
 
 	$concerndetailAreawithamount = ''.$_POST['concerndetailArea'].'';
-	
+
 	$datetime = date('Y/m/d H:i:s');
 
-   	$query = "Select concernName from concern where concernId=".$concerntype."";  
-	$result = $conn->query($query);  
-	if ($result->num_rows > 0) {     
-	  while($row = $result->fetch_assoc()) {     
-	    $concerntypename = $row["concernName"];     
-	   }    
+   	$query = "Select concernName from concern where concernId=".$concerntype."";
+	$result = $conn->query($query);
+	if ($result->num_rows > 0) {
+	  while($row = $result->fetch_assoc()) {
+	    $concerntypename = $row["concernName"];
+	   }
 	}
 
 	// if($wrongload==''){
@@ -104,24 +104,24 @@
 	$approvecode = generateRandomString();
 
   	$query = "INSERT INTO ticket (ticketId,concernId,submitDate,name,email, contactNumber,storeId,concernDetail, approveCode, Status,cardnumber,wrongload,correctamount)";
-  	$query.="VALUES ('".$ticketnumber."','".$_POST['concerntype']."','".$datetime."','".$_POST['sname']."','".$_POST['email']."','".$_POST['contactnumber']."',".$storeID.",'".$concerndetailArea."','".$approvecode."	','P','".$cardnumber."',".$wrongload.",".$correctamount.");";  	
+  	$query.="VALUES ('".$ticketnumber."','".$_POST['concerntype']."','".$datetime."','".$_POST['sname']."','".$_POST['email']."','".$_POST['contactnumber']."',".$storeID.",'".$concerndetailArea."','".$approvecode."	','P','".$cardnumber."',".$wrongload.",".$correctamount.");";
 
 
   	if ($conn->query($query) === TRUE) {
-    
+
 	} else {
     echo "Error: " . $query . "<br>" . $conn->error;}
-    
-	
+
+
 	echo 'Ticket Number:'.$ticketnumber;
-	echo '<br>';	
-	echo 'Sender:'.$_POST['sname'].'<br>'; 
-	echo 'Email:'.$_POST['email'].'<br>'; 
+	echo '<br>';
+	echo 'Sender:'.$_POST['sname'].'<br>';
+	echo 'Email:'.$_POST['email'].'<br>';
 	echo 'Contact Number'.$_POST['contactnumber'].'<br>';
 	echo 'Wrong Load Amount'.$_POST['wrongload'].'<br>';
 	echo 'Correct Amount'.$_POST['correctamount'].'<br>';
-	echo ''.$concerntypename.'<br>'; 
-	
+	echo ''.$concerntypename.'<br>';
+
 	echo 'Concern in detail:<br> '.$_POST['concerndetailArea'].'<br>';
 
 	$conn->close();
@@ -167,7 +167,7 @@ table, th, td {
 
 if ($concerntype==1){
 	$message.="
- </tr> 
+ </tr>
 	<tr>
 	<td bgcolor='#f2f2f2'>(Wrong Load):</td><td  bgcolor='#f2f2f2'>".$wrongload."</td>
 	 </tr>
@@ -189,21 +189,21 @@ $message.="
 <tr>
 		<td colspan='' align='center'>
 			<a href='http://122.53.58.75/pondo/ticketApprove.php?approvecode=".$approvecode."' target='_blank'>
-				<img src='http://pondobilling.net/share/pondosupportimage/Approve.png' alt='' width='225' height='65'> 
+				<img src='http://pondobilling.net/share/pondosupportimage/Approve.png' alt='' width='225' height='65'>
 			</a>
 		</td>
 
 		<td colspan='' align='center'>
 			<a href='http://122.53.58.75/pondo/ticketReject.php?approvecode=".$approvecode."' target='_blank'>
-				<img src='http://pondobilling.net/share/pondosupportimage/Reject.png' alt='' width='225' height='65'> 
+				<img src='http://pondobilling.net/share/pondosupportimage/Reject.png' alt='' width='225' height='65'>
 			</a>
 		</td>
-		
+
 </tr>
 </table>";
 
 $message.="
-<font style='font-family:Monospace;color:black;font-style:normal;font-size:14px'> 
+<font style='font-family:Monospace;color:black;font-style:normal;font-size:14px'>
 If you can't see the image<br>
 Click on the link below to Approve the ticket:
 <br>
@@ -246,12 +246,12 @@ else{
 }
 
 $mailer = Swift_Mailer::newInstance($transport);
-$messageintro="<font style='font-family:Monospace;color:black;font-style:normal;font-size:14px'> 
+$messageintro="<font style='font-family:Monospace;color:black;font-style:normal;font-size:14px'>
 A new ticket has been sumbitted, please select a response once your done reviewing the details.<br>
 </font>";
 $message = Swift_Message::newInstance('New Ticket '.$ticketnumber.'')
-  ->setFrom(array('pondobilling@gmail.com' => 'Pondo Billing Support'))  
-  ->setTo($arrayto)      
+  ->setFrom(array('pondobilling@gmail.com' => 'Pondo Billing Support'))
+  ->setTo($arrayto)
   ->setBody("".$message,'text/html');
 
 //$target_path = fileattachment();
@@ -306,8 +306,8 @@ if($haveattached){
 	    	echo "<br>Have attachment ".$imageFileType."<br/>";
 	    	echo "File name : ".basename($_FILES["fileToUpload"]["name"])."<br>";
 	    	$target_path = "uploads/" . basename($_FILES['fileToUpload']['name']);
-	    	$servermove_file = true;	    		
-	    }	    
+	    	$servermove_file = true;
+	    }
 	}
 }else{
 	//echo "<br>no attachment<br>";
@@ -335,13 +335,13 @@ $mailer2 = Swift_Mailer::newInstance($transport);
 $message2 = Swift_Message::newInstance('New Ticket '.$ticketnumber.'')
   ->setFrom(array('pondobilling@gmail.com' => 'Pondo Billing Support'))
   //->setCc(array('pondo@vadesystemsolutions.com'))
-  //->setCc(array('pondobilling@gmail.com'))    
+  //->setCc(array('pondobilling@gmail.com'))
   ->setTo(array($email))
   ->setBody("".$messagetocreatorintro.$messagetocreator,'text/html');
 
 if($servermove_file){
 	$message2->attach(Swift_Attachment::fromPath($target_path));
-}  
+}
 $result = $mailer2->send($message2);
 
 if($servermove_file){
